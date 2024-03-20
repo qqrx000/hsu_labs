@@ -10,7 +10,7 @@
 
 # Выход
 	если N не от 0 до 5000, то "bad number of vertices"
-	если M не от 0 до N*(N+1)/2, то "bad number of edges"
+	если M не от 0 до N*(N-1)/2, то "bad number of edges"
 	если номер вершины не от 1 до N, то "bad vertex"
 	если длина ребра не от 0 до INT_MAX, то "bad length"
 	если строк меньше M+3, то "bad number of lines"

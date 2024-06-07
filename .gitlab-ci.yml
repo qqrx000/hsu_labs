@@ -151,3 +151,9 @@ lab11:
   extends: .master_test
   variables:
     LAB: lab11    
+
+labkosorajo:
+  extends: .master_test
+  variables:
+    LAB: labkosorajo
+

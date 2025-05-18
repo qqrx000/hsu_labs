@@ -157,3 +157,7 @@ labkosorajo:
   variables:
     LAB: labkosorajo
 
+lab-queens:
+  extends: .master_test
+  variables:
+    LAB: lab-queens

@@ -161,3 +161,8 @@ lab-queens:
   extends: .master_test
   variables:
     LAB: lab-queens
+    
+lab-gauss:
+  extends: .master_test
+  variables:
+    LAB: lab-gauss

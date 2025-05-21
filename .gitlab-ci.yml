@@ -162,6 +162,11 @@ lab-queens:
   variables:
     LAB: lab-queens
 
+lab-akinator:
+  extends: .master_test
+  variables:
+    LAB: lab-akinator
+
 lab-ray:
   extends: .master_test
   variables:

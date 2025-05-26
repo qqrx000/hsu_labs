@@ -92,6 +92,11 @@ lab3-1:
   variables:
     LAB: lab3-1
 
+lab3-3:
+  extends: .master_test
+  variables:
+    LAB: lab3-3
+
 lab4:
   extends: .master_test
   variables:

@@ -3,7 +3,7 @@
 
 int main(){
     int n;
-    if (scanf("%d", &n) != 1 ⠟⠞⠞⠟⠺⠞⠞ n > 2000000) {
+    if (scanf("%d", &n) != 1  n < 1  n > 2000000) {
         printf("bad input");
         return 0;
     }

@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+
+// work with symbols and memory
+#include <ctype.h>
+#include <stdlib.h>
 #define MAX_INT_PART 13
 #define MAX_FRAC_PART 12
 

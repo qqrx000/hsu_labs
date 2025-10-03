@@ -10,18 +10,19 @@
 #include <stdlib.h>
 #define MAX_INT_PART 13
 #define MAX_FRAC_PART 12
+#define ALPHABET "0123456789ABCDEF"
 
 int isScanFCorrect(int firstScan, int secondScan);
 
-int checkIfFractionalZero(int fPartInt[], unsigned long long lenOfFPart, int fNot);
+int checkIfFractionalZero(const int fPartInt[], int lenOfFPart, int fNot);
 
 int splitNumParts(char numInFNot[], int dotPos, char iPart[], char fPart[]);
 
-int calcDotPos(char numInFNot[]);
+int calcDotPos(const char numInFNot[]);
 
-void convertIntegerPart(int iPart[], unsigned long long len, int fNot, int sNot, char result[]);
+void convertIntegerPart(const int iPart[], int len, int fNot, int sNot, char result[]);
 
-void convertFractionalPart(int fPart[], unsigned long long len, int fNot, int sNot, char result[]);
+void convertFractionalPart(const int fPart[], int len, int fNot, int sNot, char result[]);
 
 int isBadInput(int base);
 
@@ -51,8 +52,8 @@ int main(void) {
 
     onlyIPart = splitNumParts(numInFNot, dotPos, iPart, fPart);
 
-    const unsigned long long lenOfIPart = strlen(iPart);
-    const unsigned long long lenOfFPart = strlen(fPart);
+    const int lenOfIPart = (int)strlen(iPart);
+    const int lenOfFPart = (int)strlen(fPart);
 
     // chars to int
     int iPartInt[MAX_INT_PART] = {0};
@@ -72,17 +73,17 @@ int main(void) {
     if (!onlyIPart) convertFractionalPart(fPartInt, lenOfFPart, fNot, sNot, arrForB2NotF); // same for frac
 
     printf("%s", arrForB2Not);
-    if (!onlyIPart && strlen(arrForB2NotF) > 0) printf(".%s", arrForB2NotF);
+    if (!onlyIPart && (int)strlen(arrForB2NotF) > 0) printf(".%s", arrForB2NotF);
     return EXIT_SUCCESS;
 }
 
 int isScanFCorrect(int firstScan, int secondScan) {
-    if (firstScan == 2 || secondScan == 1)
+    if (firstScan == 2 && secondScan == 1)
         return 0;
     return 1;
 }
 
-int checkIfFractionalZero(int fPartInt[], unsigned long long lenOfFPart, int fNot) {
+int checkIfFractionalZero(const int fPartInt[], int lenOfFPart, int fNot) {
     double fSum = 0;
     for (int i = 0; i < lenOfFPart; i++) fSum += fPartInt[i] * pow(fNot, -i - 1);
     return (fSum == 0);
@@ -100,7 +101,7 @@ int splitNumParts(char numInFNot[], int dotPos, char iPart[], char fPart[]) {
     }
 }
 
-int calcDotPos(char numInFNot[]) {
+int calcDotPos(const char numInFNot[]) {
     for (int i = 0; numInFNot[i] != '\0'; i++) {
         if (numInFNot[i] == '.') {
             return i;
@@ -109,7 +110,7 @@ int calcDotPos(char numInFNot[]) {
     return -1;
 }
 
-void convertIntegerPart(int iPart[], unsigned long long len, int fNot, int sNot, char result[]) {
+void convertIntegerPart(const int iPart[], int len, int fNot, int sNot, char result[]) {
     if (len == 0 || (len == 1 && iPart[0] == 0)) {
         strcpy(result, "0");
         return;
@@ -117,7 +118,6 @@ void convertIntegerPart(int iPart[], unsigned long long len, int fNot, int sNot,
 
     int digits[100] = {0};
     for (int i = 0; i < len; i++) digits[i] = iPart[i]; //fill the array in reverse
-    const char alphabet[] = "0123456789ABCDEF";
     char arrForB2NotF[100] = {0};
     int arrForB2NotFPos = 0; //count numbers
 
@@ -128,7 +128,7 @@ void convertIntegerPart(int iPart[], unsigned long long len, int fNot, int sNot,
             digits[i] = current / sNot;
             remainder = current % sNot;
         }
-        arrForB2NotF[arrForB2NotFPos++] = alphabet[remainder]; //change to chars and nums
+        arrForB2NotF[arrForB2NotFPos++] = ALPHABET[remainder]; //change to chars and nums
 
         int newStart = 0; //delete zeroes
         while (newStart < len && digits[newStart] == 0) newStart++;
@@ -142,10 +142,9 @@ void convertIntegerPart(int iPart[], unsigned long long len, int fNot, int sNot,
     //reversing final result
 }
 
-void convertFractionalPart(int fPart[], unsigned long long len, int fNot, int sNot, char result[]) {
+void convertFractionalPart(const int fPart[], int len, int fNot, int sNot, char result[]) {
     int fracDigits[100] = {0};
     for (int i = 0; i < len; i++) fracDigits[i] = fPart[i]; //new array
-    const char alphabet[] = "0123456789ABCDEF";
     int pos = 0;
     for (int i = 0; i < 12 && len > 0; i++) {
         int intNum = 0; //this is intNum that remains when we multiply by sNot
@@ -155,7 +154,7 @@ void convertFractionalPart(int fPart[], unsigned long long len, int fNot, int sN
             fracDigits[j] = current % fNot;
             intNum = current / fNot; //change next pos
         }
-        result[pos++] = alphabet[intNum];
+        result[pos++] = ALPHABET[intNum];
         while (len > 0 && fracDigits[len - 1] == 0) len--; //delete zeroes after number
     }
     result[pos] = '\0'; //if frac part is void
@@ -170,7 +169,7 @@ int checkIfNumberInNotation(char numInFNot[], int fn) {
 
     int dotCount = 0, validChars = 0;
     for (int i = 0; numInFNot[i] != '\0'; i++) {
-        char c = toupper(numInFNot[i]);
+        char c = (char)toupper(numInFNot[i]);
 
         if (c == '.') {
             if (++dotCount > 1 || i == 0 || numInFNot[i + 1] == '\0') return 1;
@@ -190,7 +189,7 @@ int checkIfNumberInNotation(char numInFNot[], int fn) {
 }
 
 int charToInt(char ch) {
-    ch = toupper(ch);
+    ch = (char)toupper(ch);
     int result;
     if (ch >= '0' && ch <= '9') {
         result = ch - '0';

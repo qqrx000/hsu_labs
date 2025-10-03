@@ -33,8 +33,8 @@ int charToInt(char ch);
 int main(void) {
     int fNot, sNot; //first Notation second Notation
     char numInFNot[14];
-    int firstScan = scanf("%i %i\n", &fNot, &sNot);
-    int secondScan = scanf("%s", numInFNot);
+    int firstScan = scanf("%2i %2i\n", &fNot, &sNot);
+    int secondScan = scanf("%13s", numInFNot);
 
     if (isBadInput(fNot) || isBadInput(sNot) || checkIfNumberInNotation(numInFNot, fNot) || isScanFCorrect(firstScan, secondScan)) {
         //checking bad input

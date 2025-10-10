@@ -8,6 +8,7 @@
 #define MAX_FRAC_PART 12
 #define MAX_LEN_STRING 14
 #define ALPHABET "0123456789ABCDEF"
+#define ARRAY_SIZE 64
 
 int isScanFCorrect(int firstScan, int secondScan);
 
@@ -47,8 +48,8 @@ int main(void) {
     const int lenOfIPart = (int) strlen(iPart);
     const int lenOfFPart = (int) strlen(fPart);
 
-    char arrForB2Not[100] = {0};
-    char arrForB2NotF[100] = {0};
+    char arrForB2Not[ARRAY_SIZE] = {0};
+    char arrForB2NotF[ARRAY_SIZE] = {0};
 
     convertIntegerPart(iPart, lenOfIPart, fNot, sNot, arrForB2Not); //changing Int Array through func
     convertFractionalPart(fPart, lenOfFPart, fNot, sNot, arrForB2NotF); // same for frac

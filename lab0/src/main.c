@@ -54,14 +54,11 @@ int main(void) {
   char arrForB2Not[ARRAY_SIZE] = {0};
   char arrForB2NotF[ARRAY_SIZE] = {0};
 
-  convertIntegerPart(iPart, lenOfIPart, fNot, sNot,
-                     arrForB2Not); // changing Int Array through func
-  convertFractionalPart(fPart, lenOfFPart, fNot, sNot,
-                        arrForB2NotF); // same for frac
+  convertIntegerPart(iPart, lenOfIPart, fNot, sNot, arrForB2Not); // changing Int Array through func
+  convertFractionalPart(fPart, lenOfFPart, fNot, sNot, arrForB2NotF); // same for frac
 
   printf("%s", arrForB2Not);
-  if (onlyIPart == 0 && !checkIfFractionalZero(fPart, lenOfFPart, fNot))
-    printf(".%s", arrForB2NotF);
+  if (onlyIPart == 0 && !checkIfFractionalZero(fPart, lenOfFPart, fNot)) printf(".%s", arrForB2NotF);
   return EXIT_SUCCESS;
 }
 
@@ -104,8 +101,7 @@ void convertIntegerPart(const char iPart[], int len, int fNot, int sNot,
     return;
   }
   int digits[ARRAY_SIZE] = {0};
-  for (int i = 0; i < len; i++)
-    digits[i] = iPartInt[i]; // fill the array in reverse
+  for (int i = 0; i < len; i++) digits[i] = iPartInt[i]; // fill the array in reverse
   char arrForB2NotF[ARRAY_SIZE] = {0};
   int arrForB2NotFPos = 0; // count numbers
 
@@ -120,11 +116,9 @@ void convertIntegerPart(const char iPart[], int len, int fNot, int sNot,
         ALPHABET[remainder]; // change to chars and nums
 
     int newStart = 0; // delete zeroes
-    while (newStart < len && digits[newStart] == 0)
-      newStart++;
+    while (newStart < len && digits[newStart] == 0) newStart++;
 
-    for (int i = 0; i < len - newStart; i++)
-      digits[i] = digits[i + newStart];
+    for (int i = 0; i < len - newStart; i++) digits[i] = digits[i + newStart];
 
     len -= newStart;
   }

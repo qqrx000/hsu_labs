@@ -29,9 +29,9 @@ int charToInt(char ch);
 int main(void) {
   int fNot, sNot; // first Notation second Notation
   char numInFNot[MAX_LEN_STRING];
-  if (scanf("%2i %2i\n", &fNot, &sNot) != 2) return EXIT_SUCCESS;
-  if (scanf("%13s", numInFNot) != 1) return EXIT_SUCCESS;
-
+  if (scanf("%2i %2i\n", &fNot, &sNot) != 2 || scanf("%13s", numInFNot) != 1) {
+    return !printf("bad input");
+  }
   if (isBadInput(fNot) || isBadInput(sNot) ||
       checkIfNumberInNotation(numInFNot, fNot)) {
     printf("bad input");
@@ -59,10 +59,14 @@ int main(void) {
   return EXIT_SUCCESS;
 }
 
-int checkIfFractionalZero(const char fPartInt[], const size_t lenOfFPart, const int fNot) {
+int checkIfFractionalZero(const char fPartInt[], const size_t lenOfFPart,
+                          const int fNot) {
   double fSum = 0;
-  for (size_t i = 0; i < lenOfFPart; i++)
-    fSum += fPartInt[i] * pow(fNot, -i - 1);
+  int j = 0;
+  for (size_t i = 0; i < lenOfFPart; i++) {
+    fSum += fPartInt[i] * pow(fNot, -j - 1);
+    j++;
+  }
   return (fSum == 0);
 }
 
@@ -84,8 +88,8 @@ int splitNumParts(char numInFNot[], char iPart[], char fPart[]) {
   return 0;
 }
 
-void convertIntegerPart(const char iPart[], size_t len, const int fNot, const int sNot,
-                        char result[]) {
+void convertIntegerPart(const char iPart[], size_t len, const int fNot,
+                        const int sNot, char result[]) {
   int iPartInt[MAX_INT_PART] = {0};
   for (size_t i = 0; i < len; i++)
     iPartInt[i] = charToInt(iPart[i]);
@@ -94,7 +98,8 @@ void convertIntegerPart(const char iPart[], size_t len, const int fNot, const in
     return;
   }
   int digits[ARRAY_SIZE] = {0};
-  for (size_t i = 0; i < len; i++) digits[i] = iPartInt[i]; // fill the array in reverse
+  for (size_t i = 0; i < len; i++)
+    digits[i] = iPartInt[i]; // fill the array in reverse
   char arrForB2NotF[ARRAY_SIZE] = {0};
   int arrForB2NotFPos = 0; // count numbers
 
@@ -109,9 +114,11 @@ void convertIntegerPart(const char iPart[], size_t len, const int fNot, const in
         ALPHABET[remainder]; // change to chars and nums
 
     size_t newStart = 0; // delete zeroes
-    while (newStart < len && digits[newStart] == 0) newStart++;
+    while (newStart < len && digits[newStart] == 0)
+      newStart++;
 
-    for (size_t i = 0; i < len - newStart; i++) digits[i] = digits[i + newStart];
+    for (size_t i = 0; i < len - newStart; i++)
+      digits[i] = digits[i + newStart];
 
     len -= newStart;
   }
@@ -121,8 +128,8 @@ void convertIntegerPart(const char iPart[], size_t len, const int fNot, const in
   // reversing final result
 }
 
-void convertFractionalPart(const char fPart[], size_t len, const int fNot,const int sNot,
-                           char result[]) {
+void convertFractionalPart(const char fPart[], size_t len, const int fNot,
+                           const int sNot, char result[]) {
   int fPartInt[MAX_FRAC_PART] = {0};
   for (size_t i = 0; i < len; i++)
     fPartInt[i] = charToInt(fPart[i]);
@@ -133,8 +140,8 @@ void convertFractionalPart(const char fPart[], size_t len, const int fNot,const 
   int pos = 0;
   for (int i = 0; i < MAX_FRAC_PART && len > 0; i++) {
     int intNum = 0; // this is intNum that remains when we multiply by sNot
-    for (size_t j = len - 1; j > 0; j--) {
-      // j from end
+    int helpLen = (int)len;
+    for (int j = helpLen - 1; j >= 0; j--) {
       const int current = fracDigits[j] * sNot + intNum;
       fracDigits[j] = current % fNot;
       intNum = current / fNot; // change next pos

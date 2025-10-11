@@ -46,7 +46,7 @@ int main(void) {
   }
 
   char iPart[MAX_INT_PART] = {0}, fPart[MAX_FRAC_PART] = {0};
-  int onlyIPart = splitNumParts(numInFNot, iPart, fPart);
+  const int onlyIPart = splitNumParts(numInFNot, iPart, fPart);
 
   const int lenOfIPart = (int)strlen(iPart);
   const int lenOfFPart = (int)strlen(fPart);

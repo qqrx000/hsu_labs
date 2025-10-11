@@ -61,7 +61,7 @@ int main(void) {
 
 int checkIfFractionalZero(const char fPartInt[], const size_t lenOfFPart, const int fNot) {
   double fSum = 0;
-  for (int i = 0; i < lenOfFPart; i++)
+  for (size_t i = 0; i < lenOfFPart; i++)
     fSum += fPartInt[i] * pow(fNot, -i - 1);
   return (fSum == 0);
 }

@@ -94,14 +94,6 @@ void swap(size_t *s1, size_t *s2) {
   *s2 = tmp;
 }
 
-void outputChain(const char *chain, const size_t lenOfChain) {
-  if (lenOfChain) {
-    for (size_t i = 0; i < lenOfChain; ++i)
-      printf("%c", chain[i]);
-    printf("\n");
-  }
-}
-
 int permutations(size_t *chain, const size_t lenOfChain,
                  const size_t countOfPerm) {
   size_t countSuccess = 0;

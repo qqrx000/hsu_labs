@@ -5,19 +5,23 @@
 #define WRONG_ARR_LEN 256
 #define LEN_OF_TEMPLATE 17 //16+1
 
-void analyzeAndPrint(FILE *file, const char *template);
+void analyzeAndPrint(const char *template);
 
 int main(void) {
   char template[LEN_OF_TEMPLATE];
-  // read template
-  if (fgets(template, sizeof(template), stdin)==NULL) {
-    return 0; // nothing read
+  int i = 0;
+  while (i < LEN_OF_TEMPLATE) {
+	  const int c = getchar();
+	  if (c == EOF || c == '\n') {
+	  	break;	  
+	  }
+	  template[i++] = (char)c;
   }
-  size_t len = strlen(template);
-  if (len > 0 && template[len - 1] == '\n') {
-	  template[len-1] = '\0';
+  if (i == 0) {
+	  return 0;
   }
-  analyzeAndPrint(stdin, template);
+  template[i] = '\0';
+  analyzeAndPrint(template);
   return 0;
 }
 
@@ -70,16 +74,26 @@ int search(const char *text, const char *template, const int textLen,
 }
 
 //read file and search
-void analyzeAndPrint(FILE *file, const char *template) {
+void analyzeAndPrint(const char *template) {
   char buffer[PAGE_SIZE];
   int start_pos = 0;
   int usedBytes = 0;
 
   while (1) {
     // try to fill the rest buff
-    const int freeSpace = PAGE_SIZE - usedBytes;
-    const int count = fread(buffer + usedBytes, 1, freeSpace, file);
-    // check if nothing readed
+    const size_t freeSpace = PAGE_SIZE - usedBytes;
+    int count = 0;
+
+    for (size_t i = 0; i < freeSpace; ++i) {
+      const int c = getchar();
+      if (c == EOF) {
+        break;
+      }
+      buffer[usedBytes + i] = (char)c;
+      count++;
+    }
+
+    // check if nothing read
     if (count <= 0) {
       break;
     }

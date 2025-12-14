@@ -10,10 +10,13 @@ void analyzeAndPrint(FILE *file, const char *template);
 int main(void) {
   char template[LEN_OF_TEMPLATE];
   // read template
-  if (scanf("%16[^\n]", template) != 1) {
+  if (fgets(template, sizeof(template), stdin)==NULL) {
     return 0; // nothing read
   }
-  getchar(); // consume newline
+  size_t len = strlen(template);
+  if (len > 0 && template[len - 1] == '\n') {
+	  template[len-1] = '\0';
+  }
   analyzeAndPrint(stdin, template);
   return 0;
 }
@@ -98,3 +101,4 @@ void analyzeAndPrint(FILE *file, const char *template) {
     start_pos += consumed;
   }
 }
+

@@ -4,6 +4,7 @@
 
 #define LEN_OF_SYMBOLS 32
 #define ERROR "bad input"
+
 typedef enum {
   fromCharToSizeT,
   fromSizeTToChar,
@@ -21,8 +22,8 @@ int main(void) {
     printf(ERROR);
     return EXIT_SUCCESS;
   }
-  size_t lenOfChain = strlen(chain);
-  if (lenOfChain > 0 && chain[lenOfChain - 1] == '\n') { // delete \0
+  size_t lenOfChain = strlen(chain); //not const( due to 27 line
+  if (lenOfChain > 0 && chain[lenOfChain - 1] == '\n') { // delete \n
     chain[lenOfChain - 1] = '\0';
     lenOfChain--;
   }
@@ -55,11 +56,11 @@ int checkForDuplicates(const char *chain, const size_t lenOfChain) {
     for (size_t j = i + 1; j < lenOfChain; ++j) {
       if (chain[i] == chain[j]) {
         printf(ERROR);
-        return EXIT_FAILURE;
+        return 1;
       }
     }
   }
-  return EXIT_SUCCESS;
+  return 0;
 }
 
 int changeArrType(char *charArr, size_t *numArr, const size_t len,
@@ -70,21 +71,21 @@ int changeArrType(char *charArr, size_t *numArr, const size_t len,
       if (charArr[i] >= '0' && charArr[i] <= '9') {
         numArr[i] = (size_t)(charArr[i] - '0');
       } else {
-        return EXIT_FAILURE;
+        return 1;
       }
     }
-    return EXIT_SUCCESS;
+    return 0;
   case fromSizeTToChar:
     for (size_t i = 0; i < len; ++i) {
       if (numArr[i] <= 9) {
         charArr[i] = (char)(numArr[i] + '0');
       } else {
-        return EXIT_FAILURE;
+        return 1;
       }
     }
-    return EXIT_SUCCESS;
+    return 0;
   default:
-    return EXIT_FAILURE;
+    return 1;
   }
 }
 
@@ -118,12 +119,12 @@ int permutations(size_t *chain, const size_t lenOfChain,
     }
     char strChain[lenOfChain + 1];
     if (changeArrType(strChain, chain, lenOfChain, fromSizeTToChar) ==
-        EXIT_FAILURE) {
-      return EXIT_FAILURE;
+        1) {
+      return 1;
     }
     strChain[lenOfChain] = '\0'; // add \0
     printf("%s\n", strChain);
     ++countSuccess;
   }
-  return EXIT_SUCCESS;
+  return 0;
 }

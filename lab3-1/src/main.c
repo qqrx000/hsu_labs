@@ -35,30 +35,35 @@ void swap(int* a, int* b) {
     *b = temp;
 }
 
-size_t separate(int *arr, const size_t first, const size_t last) {
-    const int pivot = arr[(first+last)/2];
-    size_t i = first - 1;
-    size_t j = last + 1;
+void separate(int *arr, const size_t first, const size_t last, size_t *left, size_t *right) {
+    const int pivot = arr[(first + last) / 2];
+    size_t i = first, j = first, k = last;
 
-    while (1) {
-        while (arr[i] < pivot) {
+    while (j <= k) {
+        if (arr[j] < pivot) {
+            swap(&arr[i], &arr[j]);
             ++i;
+            ++j;
+        } else if (arr[j] > pivot) {
+            swap(&arr[j], &arr[k]);
+            --k;
+        } else {
+            ++j;
         }
-        while (arr[j] > pivot) {
-            --j;
-        }
-        if (i >= j) {
-            return j;
-        }
-        swap(&arr[i], &arr[j]);
     }
-
+    *left = i;
+    *right = j;
 }
 
 void quickSort(int *arr, const size_t first, const size_t last) {
     if (first < last) {
-        const size_t middle = separate(arr, first, last);
-        quickSort(arr, first, middle);
-        quickSort(arr, middle+1, last);
+        size_t left, right;
+        separate(arr, first, last, &left, &right);
+        if (first < left) {
+            quickSort(arr, first, left - 1);
+        }
+        if (right < last) {
+            quickSort(arr, right, last);
+        }
     }
 }

@@ -5,16 +5,13 @@
 #define LEN_OF_SYMBOLS 32
 #define ERROR "bad input"
 
-typedef enum {
-  fromCharToSizeT,
-  fromSizeTToChar,
-} typeOfChange;
-
 int checkForDuplicates(const char *chain, size_t lenOfChain);
 
 int permutations(size_t *chain, size_t lenOfChain, size_t countOfPerm);
 
-int changeArrType(char *charArr, size_t *numArr, size_t len, typeOfChange type);
+int charArrToSizeT(const char *charArr, size_t *numArr, size_t len);
+
+int sizeTArrToChar(char *charArr, const size_t *numArr, size_t len);
 
 int main(void) {
   char chain[LEN_OF_SYMBOLS] = "";
@@ -31,7 +28,8 @@ int main(void) {
     printf(ERROR);
     return EXIT_SUCCESS;
   }
-  if (checkForDuplicates(chain, lenOfChain) == EXIT_FAILURE) {
+  if (checkForDuplicates(chain, lenOfChain) == 1) {
+    printf(ERROR);
     return EXIT_SUCCESS;
   }
   size_t countOfPerm;
@@ -41,11 +39,11 @@ int main(void) {
   }
 
   size_t newChain[lenOfChain];
-  if (changeArrType(chain, newChain, lenOfChain, fromCharToSizeT) == 1) {
+  if (charArrToSizeT(chain, newChain, lenOfChain) == 1) {
     printf(ERROR);
     return EXIT_SUCCESS;
   }
-  if (permutations(newChain, lenOfChain, countOfPerm) == EXIT_FAILURE) {
+  if (permutations(newChain, lenOfChain, countOfPerm) == 1) {
     printf(ERROR);
   }
   return EXIT_SUCCESS;
@@ -55,7 +53,6 @@ int checkForDuplicates(const char *chain, const size_t lenOfChain) {
   for (size_t i = 0; i < lenOfChain; ++i) {
     for (size_t j = i + 1; j < lenOfChain; ++j) {
       if (chain[i] == chain[j]) {
-        printf(ERROR);
         return 1;
       }
     }
@@ -63,10 +60,7 @@ int checkForDuplicates(const char *chain, const size_t lenOfChain) {
   return 0;
 }
 
-int changeArrType(char *charArr, size_t *numArr, const size_t len,
-                  const typeOfChange type) {
-  switch (type) {
-  case fromCharToSizeT:
+int charArrToSizeT(const char *charArr, size_t *numArr, const size_t len) {
     for (size_t i = 0; i < len; ++i) {
       if (charArr[i] >= '0' && charArr[i] <= '9') {
         numArr[i] = (size_t)(charArr[i] - '0');
@@ -75,18 +69,17 @@ int changeArrType(char *charArr, size_t *numArr, const size_t len,
       }
     }
     return 0;
-  case fromSizeTToChar:
-    for (size_t i = 0; i < len; ++i) {
-      if (numArr[i] <= 9) {
-        charArr[i] = (char)(numArr[i] + '0');
-      } else {
-        return 1;
-      }
+}
+
+int sizeTArrToChar(char *charArr, const size_t *numArr, const size_t len) {
+  for (size_t i = 0; i < len; ++i) {
+    if (numArr[i] <= 9) {
+      charArr[i] = (char)(numArr[i] + '0');
+    } else {
+      return 1;
     }
-    return 0;
-  default:
-    return 1;
   }
+  return 0;
 }
 
 void swap(size_t *s1, size_t *s2) {
@@ -118,7 +111,7 @@ int permutations(size_t *chain, const size_t lenOfChain,
       --j;
     }
     char strChain[lenOfChain + 1];
-    if (changeArrType(strChain, chain, lenOfChain, fromSizeTToChar) ==
+    if (sizeTArrToChar(strChain, chain, lenOfChain) ==
         1) {
       return 1;
     }

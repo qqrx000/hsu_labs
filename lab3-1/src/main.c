@@ -56,14 +56,13 @@ void separate(int *arr, const size_t first, const size_t last, size_t *left, siz
 }
 
 void quickSort(int *arr, const size_t first, const size_t last) {
-    if (first < last) {
-        size_t left, right;
-        separate(arr, first, last, &left, &right);
-        if (first < left) {
-            quickSort(arr, first, left - 1);
-        }
-        if (right < last) {
-            quickSort(arr, right, last);
-        }
+    if (first >= last) return;
+    size_t left, right;
+    separate(arr, first, last, &left, &right);
+    if (first < left) {
+        quickSort(arr, first, left - 1);
+    }
+    if (right < last) {
+        quickSort(arr, right, last);
     }
 }

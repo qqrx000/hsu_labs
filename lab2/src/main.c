@@ -5,7 +5,7 @@
 #define LEN_OF_SYMBOLS 32
 #define ERROR "bad input"
 
-int checkForDuplicates(const char *chain, size_t lenOfChain);
+int containsDuplicates(const char *chain, size_t lenOfChain);
 
 int permutations(size_t *chain, size_t lenOfChain, size_t countOfPerm);
 
@@ -14,7 +14,7 @@ int charArrToSizeT(const char *charArr, size_t *numArr, size_t len);
 int sizeTArrToChar(char *charArr, const size_t *numArr, size_t len);
 
 int main(void) {
-  char chain[LEN_OF_SYMBOLS] = "";
+  char chain[LEN_OF_SYMBOLS];
   if (fgets(chain, LEN_OF_SYMBOLS, stdin) == NULL) {
     printf(ERROR);
     return EXIT_SUCCESS;
@@ -28,7 +28,7 @@ int main(void) {
     printf(ERROR);
     return EXIT_SUCCESS;
   }
-  if (checkForDuplicates(chain, lenOfChain) == 1) {
+  if (containsDuplicates(chain, lenOfChain) == 1) {
     printf(ERROR);
     return EXIT_SUCCESS;
   }
@@ -38,18 +38,24 @@ int main(void) {
     return EXIT_SUCCESS;
   }
 
-  size_t newChain[lenOfChain];
+  size_t *newChain = malloc(lenOfChain * sizeof(size_t));
+  if (newChain == NULL) {
+    printf(ERROR);
+    return EXIT_SUCCESS;
+  }
   if (charArrToSizeT(chain, newChain, lenOfChain) == 1) {
     printf(ERROR);
+    free(newChain);
     return EXIT_SUCCESS;
   }
   if (permutations(newChain, lenOfChain, countOfPerm) == 1) {
     printf(ERROR);
   }
+  free(newChain);
   return EXIT_SUCCESS;
 }
 
-int checkForDuplicates(const char *chain, const size_t lenOfChain) {
+int containsDuplicates(const char *chain, const size_t lenOfChain) {
   for (size_t i = 0; i < lenOfChain; ++i) {
     for (size_t j = i + 1; j < lenOfChain; ++j) {
       if (chain[i] == chain[j]) {

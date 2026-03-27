@@ -54,12 +54,15 @@ void heapify(int *arr, const size_t heapSize, size_t current) {
             current = largest;
             needContinue = 1;
         }
-
     } while (needContinue);
 }
 
 void heapSort(int *arr, const size_t len) {
-    for (int i = (int) (len / 2 - 1); i >= 0; i--) {
+    if (arr == NULL || len <= 1) {
+        return;
+    }
+
+    for (int i = (int) (len / 2) - 1; i >= 0; i--) {
         heapify(arr, len, i);
     }
 

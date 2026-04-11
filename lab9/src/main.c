@@ -11,7 +11,8 @@ char initParentArr(size_t **arr, size_t vertex, size_t **matrix);
 
 char initChArr(char **arr, size_t vertex, size_t **matrix, size_t **parent);
 
-char initSztArr(size_t **arr, size_t vertex, size_t **matrix, char **visited, size_t **parent);
+char initSztArr(size_t **arr, size_t vertex, size_t **matrix, char **visited,
+                size_t **parent);
 
 void deikstraAlgorithm(const size_t *matrix, size_t *distance, size_t *parent,
                        char *visited, size_t vertex, size_t start);
@@ -110,7 +111,8 @@ char initParentArr(size_t **arr, const size_t vertex, size_t **matrix) {
   return 0;
 }
 
-char initChArr(char **arr, const size_t vertex, size_t **matrix, size_t **parent) {
+char initChArr(char **arr, const size_t vertex, size_t **matrix,
+               size_t **parent) {
   *arr = malloc(vertex * sizeof(char));
   if (!*arr) {
     printf("malloc failed");
@@ -188,8 +190,9 @@ void printDistance(const size_t *distance, const size_t start,
   printf("\n");
 }
 
-void printPath(const size_t finish, const size_t *parent, const size_t *distance,
-               const size_t vertex, const size_t start) {
+void printPath(const size_t finish, const size_t *parent,
+               const size_t *distance, const size_t vertex,
+               const size_t start) {
   if (distance[finish] == SIZE_T_MAX) {
     printf("no path\n");
     return;

@@ -7,7 +7,7 @@
 
 int read(size_t *vertex, size_t *edge, size_t *start, size_t *finish,
          int **matrix) {
-  if (scanf("%zu", vertex) != 1 || *vertex > 5000 || *vertex < 1) {
+  if (scanf("%zu", vertex) != 1 || *vertex > 5000) {
     printf("bad number of vertices");
     return 1;
   }

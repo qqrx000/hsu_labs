@@ -27,10 +27,6 @@ int read(size_t *vertex, size_t *edge, size_t *start, size_t *finish,
     return 1;
   }
 
-  for (size_t i = 0; i < *vertex * *vertex; ++i) {
-    (*matrix)[i] = 0;
-  }
-
   for (size_t i = 0; i < *edge; ++i) {
     size_t from, to;
     long long len;

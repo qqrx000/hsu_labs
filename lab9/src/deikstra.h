@@ -1,5 +1,5 @@
-#ifndef LAB9_DEIKSTRA_H
-#define LAB9_DEIKSTRA_H
+#ifndef DEIKSTRA_H
+#define DEIKSTRA_H
 #include <stddef.h>
 
 void deikstraAlgorithm(const int *matrix, size_t *distance, size_t *parent,

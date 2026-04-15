@@ -3,7 +3,8 @@ project(lab9 C)
 
 set(SRC src/main.c
         src/deikstra.h
-        src/deikstra.c)
+        src/deikstra.c
+        src/io.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

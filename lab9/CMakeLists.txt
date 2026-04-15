@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5.1)
 project(lab9 C)
 
 set(SRC src/main.c
-        src/deikstra.h
         src/deikstra.c
         src/io.c)
 

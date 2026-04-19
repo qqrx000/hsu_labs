@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int read(int *vertex, int **numbers) {
+int read(int *vertex) {
   if (scanf("%d", vertex) != 1) {
     printf("Empty input");
     return 1;
@@ -11,18 +11,6 @@ int read(int *vertex, int **numbers) {
   if (*vertex > 2000000 || *vertex < 0) {
     printf("Bad input");
     return 1;
-  }
-  *numbers = malloc(sizeof(int) * *vertex);
-  if (!*numbers) {
-    printf("malloc failed");
-    return 1;
-  }
-  for (int i = 0; i < *vertex; ++i) {
-    if (scanf("%d", *numbers + i) != 1) {
-      printf("Bad input");
-      free(*numbers);
-      return 1;
-    }
   }
   return 0;
 }

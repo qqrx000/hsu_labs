@@ -2,6 +2,6 @@
 #define IO_H
 #include <stddef.h>
 
-int read(int *vertex, int **numbers);
+int read(int *vertex);
 void printResult(const int *log, int idx,  int logEnable, size_t height);
 #endif

@@ -1,19 +1,17 @@
 #include "tree.h"
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-typedef struct tree {
+struct tree {
   int value;
   size_t height;
   tree *left;
   tree *right;
-} tree;
+};
 
 tree *createNode(const int value) {
   tree *newNode = malloc(sizeof(tree));
   if (!newNode) {
-    //printf("tree malloc failed");
+    // printf("tree malloc failed");
     return NULL;
   }
   newNode->height = 1;
@@ -32,7 +30,9 @@ void freeTree(tree *tree) {
 
 size_t getHeight(const tree *node) { return node ? node->height : 0; }
 
-int balance(const tree *node) { return (int)(getHeight(node->right) - getHeight(node->left)); }
+int balance(const tree *node) {
+  return (int)(getHeight(node->right) - getHeight(node->left));
+}
 
 size_t max(const size_t left, const size_t right) {
   return (left > right ? left : right);
@@ -44,7 +44,8 @@ tree *smallRight(tree *node) {
   leftChild->right = node;
   node->left = subTreeChild;
   node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
-  leftChild->height = max(getHeight(leftChild->left), getHeight(leftChild->right)) + 1;
+  leftChild->height =
+      max(getHeight(leftChild->left), getHeight(leftChild->right)) + 1;
   return leftChild;
 }
 
@@ -54,7 +55,8 @@ tree *smallLeft(tree *node) {
   rightChild->left = node;
   node->right = subTreeChild;
   node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
-  rightChild->height = max(getHeight(rightChild->left), getHeight(rightChild->right)) + 1;
+  rightChild->height =
+      max(getHeight(rightChild->left), getHeight(rightChild->right)) + 1;
   return rightChild;
 }
 
@@ -72,7 +74,8 @@ tree *insert(tree *node, const int value, int *log, const int logEnable,
              int *idx) {
   if (node == NULL) {
     tree *tmp = createNode(value);
-    if (!tmp) return NULL;
+    if (!tmp)
+      return NULL;
     return tmp;
   }
   if (value < node->value) {

@@ -1,11 +1,10 @@
 #include "tree.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
 struct tree {
   int value;
-  int height;
+  char height;
   tree *left;
   tree *right;
 };
@@ -30,14 +29,14 @@ void freeTree(tree *tree) {
   free(tree);
 }
 
-int getHeight(const tree *node) { return node ? node->height : 0; }
+char getHeight(const tree *node) { return node ? node->height : 0; }
 
 int balance(const tree *node) {
   if (node == NULL) { return 0;}
   return getHeight(node->right) - getHeight(node->left);
 }
 
-int max(const int left, const int right) {
+char max(const char left, const char right) {
   return left > right ? left : right;
 }
 
@@ -46,9 +45,9 @@ tree *smallRight(tree *node) {
   tree *subTreeChild = leftChild->right;
   leftChild->right = node;
   node->left = subTreeChild;
-  node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
+  node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
   leftChild->height =
-      max(getHeight(leftChild->left), getHeight(leftChild->right)) + 1;
+      (char)(max(getHeight(leftChild->left), getHeight(leftChild->right)) + 1);
   return leftChild;
 }
 
@@ -57,9 +56,9 @@ tree *smallLeft(tree *node) {
   tree *subTreeChild = rightChild->left;
   rightChild->left = node;
   node->right = subTreeChild;
-  node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
+  node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
   rightChild->height =
-      max(getHeight(rightChild->left), getHeight(rightChild->right)) + 1;
+      (char)(max(getHeight(rightChild->left), getHeight(rightChild->right)) + 1);
   return rightChild;
 }
 
@@ -73,18 +72,17 @@ tree *bigLeft(tree *node) {
   return smallRight(node);
 }
 
-tree *insert(tree *node, const int value, const int logEnable,
-             int *idx) {
+tree *insert(tree *node, const int value, const char logEnable) {
   if (node == NULL) {
     return createNode(value);
   }
   if (value < node->value) {
-    node->left = insert(node->left, value, logEnable, idx);
+    node->left = insert(node->left, value, logEnable);
   } else {
-    node->right = insert(node->right, value, logEnable, idx);
+    node->right = insert(node->right, value, logEnable);
   }
   // recalculate height
-  node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
+  node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
 
   // rotates
   const int bal = balance(node);

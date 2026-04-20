@@ -1,7 +1,5 @@
 #include "io.h"
-#include "tree.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 int read(int *vertex) {
   if (scanf("%d", vertex) != 1) {
@@ -14,29 +12,3 @@ int read(int *vertex) {
   }
   return 0;
 }
-
-// void printResult(const int *log, const int idx, const int logEnable, const int height) {
-//   if (logEnable) {
-//     for (int i = 0; i < idx; i++) {
-//       switch (log[i]) {
-//       case SL:
-//         printf("SL");
-//         break;
-//       case SR:
-//         printf("SR");
-//         break;
-//       case BL:
-//         printf("BL");
-//         break;
-//       case BR:
-//         printf("BR");
-//         break;
-//       default:
-//         //printf("switch case error");
-//         break;
-//       }
-//       printf(" ");
-//     }
-//   }
-//   printf("%d", height);
-// }

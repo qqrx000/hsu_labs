@@ -16,7 +16,7 @@ int balance(const tree *node) {
   if (node == NULL) {
     return 0;
   }
-  return getHeight(node->right) - getHeight(node->left);
+  return getHeight(node->left) - getHeight(node->right);
 }
 
 char max(const char left, const char right) {
@@ -47,49 +47,53 @@ tree *smallLeft(tree *node) {
 }
 
 tree *bigRight(tree *node) {
-  node->right = smallRight(node->right);
-  return smallLeft(node);
-}
-
-tree *bigLeft(tree *node) {
-  node->left = smallLeft(node->left);
+  node->left = smallRight(node->left);
   return smallRight(node);
 }
 
+tree *bigLeft(tree *node) {
+  node->right = smallLeft(node->right);
+  return smallLeft(node);
+}
+
 tree *rotates(tree *node, const char logEnable) {
+  if (!node)
+    return NULL;
   const int bal = balance(node);
   if (bal < -1) {
-    if (balance(node->left) <= 0) {
-      if (logEnable)
-        printf("SR ");
-      return smallRight(node);
-    }
-    if (logEnable)
-      printf("BR ");
-    return bigLeft(node);
-  }
-  if (bal > 1) {
-    if (balance(node->right) >= 0) {
+    if (balance(node->right) <= 0) {
       if (logEnable)
         printf("SL ");
       return smallLeft(node);
     }
     if (logEnable)
       printf("BL ");
+    return bigLeft(node);
+  }
+  if (bal > 1) {
+    if (balance(node->left) >= 0) {
+      if (logEnable)
+        printf("SR ");
+      return smallRight(node);
+    }
+    if (logEnable)
+      printf("BR ");
     return bigRight(node);
   }
   return node;
 }
 
-tree *insert(tree *node, const int value, const char logEnable, tree *mem, int *memIdx) {
+tree *insert(tree *node, const int value, const char logEnable, tree *mem,
+             int *memIdx) {
   if (node == NULL) {
     return createNode(mem, memIdx, value);
   }
   if (value < node->value) {
     node->left = insert(node->left, value, logEnable, mem, memIdx);
-  } else {
+  } else if (value > node->value) {
     node->right = insert(node->right, value, logEnable, mem, memIdx);
-  }
+  } else
+    return node;
   // recalculate height
   node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
 

@@ -7,7 +7,7 @@ typedef struct tree {
   struct tree *left;
   struct tree *right;
 }tree;
-
+tree *createNode(tree *mem, int *idx, int value);
 char getHeight(const tree *node);
 tree *insert(tree *node, int value, char logEnable, tree *mem, int *memIdx);
 

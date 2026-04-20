@@ -2,37 +2,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct tree {
-  int value;
-  char height;
-  tree *left;
-  tree *right;
-};
-
-tree *createNode(const int value) {
-  tree *newNode = malloc(sizeof(tree));
-  if (!newNode) {
-    // printf("tree malloc failed");
-    return NULL;
-  }
-  newNode->height = 1;
-  newNode->value = value;
-  newNode->left = newNode->right = NULL;
-  return newNode;
-}
-
-void freeTree(tree *tree) {
-  if (tree == NULL)
-    return;
-  freeTree(tree->left);
-  freeTree(tree->right);
-  free(tree);
+tree *createNode(tree *mem, int *idx, const int value) {
+  tree *node = &mem[(*idx)++];
+  node->value = value;
+  node->height = 1;
+  node->left = node->right = NULL;
+  return node;
 }
 
 char getHeight(const tree *node) { return node ? node->height : 0; }
 
 int balance(const tree *node) {
-  if (node == NULL) { return 0;}
+  if (node == NULL) {
+    return 0;
+  }
   return getHeight(node->right) - getHeight(node->left);
 }
 
@@ -58,7 +41,8 @@ tree *smallLeft(tree *node) {
   node->right = subTreeChild;
   node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
   rightChild->height =
-      (char)(max(getHeight(rightChild->left), getHeight(rightChild->right)) + 1);
+      (char)(max(getHeight(rightChild->left), getHeight(rightChild->right)) +
+             1);
   return rightChild;
 }
 
@@ -72,19 +56,7 @@ tree *bigLeft(tree *node) {
   return smallRight(node);
 }
 
-tree *insert(tree *node, const int value, const char logEnable) {
-  if (node == NULL) {
-    return createNode(value);
-  }
-  if (value < node->value) {
-    node->left = insert(node->left, value, logEnable);
-  } else {
-    node->right = insert(node->right, value, logEnable);
-  }
-  // recalculate height
-  node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
-
-  // rotates
+tree *rotates(tree *node, const char logEnable) {
   const int bal = balance(node);
   if (bal < -1) {
     if (balance(node->left) <= 0) {
@@ -107,4 +79,19 @@ tree *insert(tree *node, const int value, const char logEnable) {
     return bigRight(node);
   }
   return node;
+}
+
+tree *insert(tree *node, const int value, const char logEnable, tree *mem, int *memIdx) {
+  if (node == NULL) {
+    return createNode(mem, memIdx, value);
+  }
+  if (value < node->value) {
+    node->left = insert(node->left, value, logEnable, mem, memIdx);
+  } else {
+    node->right = insert(node->right, value, logEnable, mem, memIdx);
+  }
+  // recalculate height
+  node->height = (char)(max(getHeight(node->left), getHeight(node->right)) + 1);
+
+  return rotates(node, logEnable);
 }

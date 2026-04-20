@@ -8,19 +8,27 @@ int main(void) {
   if (read(&vertex) == 1) {
     return EXIT_SUCCESS;
   }
+
+  tree *mem = malloc(vertex * sizeof(tree));
+  if (!mem) {
+    printf("malloc failed");
+    return EXIT_SUCCESS;
+  }
+
+  int memIdx = 0;
+
   tree *root = NULL;
   int number = 0;
   const char logEnable = (char)(vertex < 100);
   for (int i = 0; i < vertex; ++i) {
     if (scanf("%d", &number) != 1) {
       printf("Bad input");
-      freeTree(root);
       return EXIT_SUCCESS;
     }
-    root = insert(root, number, logEnable);
+    root = insert(root, number, logEnable, mem, &memIdx);
   }
   const char height = getHeight(root);
   printf("%d", height);
-  freeTree(root);
+  free(mem);
   return EXIT_SUCCESS;
 }

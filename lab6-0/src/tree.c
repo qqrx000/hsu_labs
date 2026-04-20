@@ -3,7 +3,7 @@
 
 struct tree {
   int value;
-  size_t height;
+  int height;
   tree *left;
   tree *right;
 };
@@ -28,13 +28,14 @@ void freeTree(tree *tree) {
   free(tree);
 }
 
-size_t getHeight(const tree *node) { return node ? node->height : 0; }
+int getHeight(const tree *node) { return node ? node->height : 0; }
 
 int balance(const tree *node) {
+  if (node == NULL) { return 0;}
   return (int)(getHeight(node->right) - getHeight(node->left));
 }
 
-size_t max(const size_t left, const size_t right) {
+int max(const int left, const int right) {
   return (left > right ? left : right);
 }
 
@@ -73,10 +74,7 @@ tree *bigLeft(tree *node) {
 tree *insert(tree *node, const int value, int *log, const int logEnable,
              int *idx) {
   if (node == NULL) {
-    tree *tmp = createNode(value);
-    if (!tmp)
-      return NULL;
-    return tmp;
+    return createNode(value);
   }
   if (value < node->value) {
     node->left = insert(node->left, value, log, logEnable, idx);
@@ -88,24 +86,24 @@ tree *insert(tree *node, const int value, int *log, const int logEnable,
 
   // rotates
   const int bal = balance(node);
-  if (bal <= -2) {
+  if (bal < -1) {
     if (balance(node->left) <= 0) {
       if (logEnable)
         log[(*idx)++] = SR;
       return smallRight(node);
     }
     if (logEnable)
-      log[(*idx)++] = BL;
+      log[(*idx)++] = BR;
     return bigLeft(node);
   }
-  if (bal >= 2) {
+  if (bal > 1) {
     if (balance(node->right) >= 0) {
       if (logEnable)
         log[(*idx)++] = SL;
       return smallLeft(node);
     }
     if (logEnable)
-      log[(*idx)++] = BR;
+      log[(*idx)++] = BL;
     return bigRight(node);
   }
   return node;

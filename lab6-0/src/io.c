@@ -15,7 +15,7 @@ int read(int *vertex) {
   return 0;
 }
 
-void printResult(const int *log, const int idx, const int logEnable, const size_t height) {
+void printResult(const int *log, const int idx, const int logEnable, const int height) {
   if (logEnable) {
     for (int i = 0; i < idx; i++) {
       switch (log[i]) {
@@ -38,5 +38,5 @@ void printResult(const int *log, const int idx, const int logEnable, const size_
       printf(" ");
     }
   }
-  printf("%zu", height);
+  printf("%d", height);
 }

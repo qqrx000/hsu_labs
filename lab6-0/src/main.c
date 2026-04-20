@@ -30,7 +30,7 @@ int main(void) {
     }
     root = insert(root, number, log, logEnable, &idx);
   }
-  const size_t height = getHeight(root);
+  const int height = getHeight(root);
   printResult(log, idx, logEnable, height);
   freeTree(root);
   free(log);

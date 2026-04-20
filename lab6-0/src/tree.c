@@ -1,4 +1,6 @@
 #include "tree.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 
 struct tree {
@@ -32,11 +34,11 @@ int getHeight(const tree *node) { return node ? node->height : 0; }
 
 int balance(const tree *node) {
   if (node == NULL) { return 0;}
-  return (int)(getHeight(node->right) - getHeight(node->left));
+  return getHeight(node->right) - getHeight(node->left);
 }
 
 int max(const int left, const int right) {
-  return (left > right ? left : right);
+  return left > right ? left : right;
 }
 
 tree *smallRight(tree *node) {
@@ -71,15 +73,15 @@ tree *bigLeft(tree *node) {
   return smallRight(node);
 }
 
-tree *insert(tree *node, const int value, int *log, const int logEnable,
+tree *insert(tree *node, const int value, const int logEnable,
              int *idx) {
   if (node == NULL) {
     return createNode(value);
   }
   if (value < node->value) {
-    node->left = insert(node->left, value, log, logEnable, idx);
+    node->left = insert(node->left, value, logEnable, idx);
   } else {
-    node->right = insert(node->right, value, log, logEnable, idx);
+    node->right = insert(node->right, value, logEnable, idx);
   }
   // recalculate height
   node->height = max(getHeight(node->left), getHeight(node->right)) + 1;
@@ -89,21 +91,21 @@ tree *insert(tree *node, const int value, int *log, const int logEnable,
   if (bal < -1) {
     if (balance(node->left) <= 0) {
       if (logEnable)
-        log[(*idx)++] = SR;
+        printf("SR ");
       return smallRight(node);
     }
     if (logEnable)
-      log[(*idx)++] = BR;
+      printf("BR ");
     return bigLeft(node);
   }
   if (bal > 1) {
     if (balance(node->right) >= 0) {
       if (logEnable)
-        log[(*idx)++] = SL;
+        printf("SL ");
       return smallLeft(node);
     }
     if (logEnable)
-      log[(*idx)++] = BL;
+      printf("BL ");
     return bigRight(node);
   }
   return node;

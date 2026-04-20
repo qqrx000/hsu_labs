@@ -10,14 +10,6 @@ int main(void) {
   }
 
   const int logEnable = vertex < 100;
-  int *log = NULL;
-  if (logEnable) {
-    log = malloc(vertex * sizeof(*log));
-    if (!log) {
-      printf("malloc failed");
-      return EXIT_SUCCESS;
-    }
-  }
   int idx = 0;
   tree *root = NULL;
   int number = 0;
@@ -25,14 +17,12 @@ int main(void) {
     if (scanf("%d", &number) != 1) {
       printf("Bad input");
       freeTree(root);
-      free(log);
       return EXIT_SUCCESS;
     }
-    root = insert(root, number, log, logEnable, &idx);
+    root = insert(root, number, logEnable, &idx);
   }
   const int height = getHeight(root);
-  printResult(log, idx, logEnable, height);
+  printf("%d", height);
   freeTree(root);
-  free(log);
   return EXIT_SUCCESS;
 }

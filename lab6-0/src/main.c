@@ -11,7 +11,7 @@ int main(void) {
 
   tree *mem = malloc((size_t)vertex * sizeof(tree));
   if (!mem) {
-    printf("pool malloc failed");
+    printf("Bad input\n");
     return EXIT_SUCCESS;
   }
 

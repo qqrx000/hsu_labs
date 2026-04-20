@@ -47,12 +47,12 @@ tree *smallLeft(tree *node) {
 }
 
 tree *bigRight(tree *node) {
-  node->left = smallRight(node->left);
+  node->left = smallLeft(node->left);
   return smallRight(node);
 }
 
 tree *bigLeft(tree *node) {
-  node->right = smallLeft(node->right);
+  node->right = smallRight(node->right);
   return smallLeft(node);
 }
 

@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIZE_T_MAX ((size_t)-1)
-
 int read(size_t *vertex, size_t *edge, size_t *start, size_t *finish,
          int **matrix) {
   if (scanf("%zu", vertex) != 1 || *vertex > 5000) {
@@ -60,7 +58,7 @@ void printDistance(const size_t *distance, const size_t start,
   for (size_t i = 0; i < vertex; ++i) {
     if (i == start)
       printf("0");
-    else if (distance[i] == SIZE_T_MAX)
+    else if (distance[i] == ULONG_MAX)
       printf("oo");
     else if (distance[i] > INT_MAX)
       printf("INT_MAX+");
@@ -75,7 +73,7 @@ void printDistance(const size_t *distance, const size_t start,
 void printPath(const size_t finish, const size_t *parent,
                const size_t *distance, const size_t vertex, const size_t start,
                const size_t *pathCount) {
-  if (distance[finish] == SIZE_T_MAX) {
+  if (distance[finish] == ULONG_MAX) {
     printf("no path\n");
     return;
   }
@@ -91,7 +89,7 @@ void printPath(const size_t finish, const size_t *parent,
   size_t path_len = 0;
   size_t current = finish;
 
-  while (current != SIZE_T_MAX && current != start) {
+  while (current != ULONG_MAX && current != start) {
     path[path_len++] = current;
     current = parent[current];
   }

@@ -12,18 +12,18 @@ tree *createNode(tree *mem, int *idx, const int value) {
 
 char getHeight(const tree *node) { return node ? node->height : 0; }
 
-int balance(const tree *node) {
+static int balance(const tree *node) {
   if (node == NULL) {
     return 0;
   }
   return getHeight(node->left) - getHeight(node->right);
 }
 
-char max(const char left, const char right) {
+static char max(const char left, const char right) {
   return left > right ? left : right;
 }
 
-tree *smallRight(tree *node) {
+static tree *smallRight(tree *node) {
   tree *leftChild = node->left;
   tree *subTreeChild = leftChild->right;
   leftChild->right = node;
@@ -34,7 +34,7 @@ tree *smallRight(tree *node) {
   return leftChild;
 }
 
-tree *smallLeft(tree *node) {
+static tree *smallLeft(tree *node) {
   tree *rightChild = node->right;
   tree *subTreeChild = rightChild->left;
   rightChild->left = node;
@@ -46,17 +46,17 @@ tree *smallLeft(tree *node) {
   return rightChild;
 }
 
-tree *bigRight(tree *node) {
+static tree *bigRight(tree *node) {
   node->left = smallLeft(node->left);
   return smallRight(node);
 }
 
-tree *bigLeft(tree *node) {
+static tree *bigLeft(tree *node) {
   node->right = smallRight(node->right);
   return smallLeft(node);
 }
 
-tree *rotates(tree *node, const char logEnable) {
+static tree *rotates(tree *node, const char logEnable) {
   if (!node)
     return NULL;
   const int bal = balance(node);

@@ -9,11 +9,10 @@ int main(void) {
 
   if (read(&vertex, &edge, &start, &finish, &matrix) == 1)
     return EXIT_SUCCESS;
-  char *visited = NULL;
   size_t *pathCount = NULL;
   size_t *distance = NULL;
   size_t *parent = NULL;
-  visited = malloc(vertex * sizeof(char));
+  char *visited = malloc(vertex * sizeof(char));
   if (!visited) {
     printf("malloc failed\n");
     goto End;

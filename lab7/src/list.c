@@ -7,20 +7,32 @@ struct node {
 };
 
 node *createNode(const size_t value) {
-  node *newNode = malloc(sizeof(node));
-  if (!newNode) {
+  node *n = malloc(sizeof(node));
+  if (!n)
     return NULL;
-  }
-  newNode->vertex = value;
-  newNode->next = NULL;
-  return newNode;
+
+  n->vertex = value;
+  n->next = NULL;
+  return n;
 }
 
 void pushFront(node **head, const size_t value) {
-  node *newNode = createNode(value);
-  if (!newNode) return;
-  newNode->next = *head;
-  *head = newNode;
+  node *n = createNode(value);
+  if (!n)
+    return;
+
+  n->next = *head;
+  *head = n;
 }
 
-//freeNodes()
+void freeNodes(node *l) {
+  while (l) {
+    node *tmp = l;
+    l = l->next;
+    free(tmp);
+  }
+}
+
+size_t getVertex(const node *n) { return n->vertex; }
+
+node *getNext(const node *n) { return n->next; }

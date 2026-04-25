@@ -3,9 +3,8 @@ project(lab7 C)
 
 set(SRC src/main.c
         src/io.c
-        src/io.h
         src/list.c
-        src/list.h)
+        src/kan.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

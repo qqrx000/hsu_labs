@@ -1,57 +1,78 @@
 #include "io.h"
-#include "list.h"
+#include "bitmatrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int read(int *vertex, int *edge, node ***adjList, size_t **inDegree) {
+#define MAX_VERTICES 2000
 
-  if (scanf("%d", vertex) != 1 || *vertex > 2000) {
+int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
+  if (scanf("%d", n) != 1) {
+    printf("bad number of lines");
+    return 0;
+  }
+
+  if (*n < 0 || *n > MAX_VERTICES) {
     printf("bad number of vertices");
-    return 1;
+    return 0;
   }
 
-  if (scanf("%d", edge) != 1 || *edge > *vertex * (*vertex - 1) / 2) {
+  if (scanf("%d", m) != 1) {
+    printf("bad number of lines");
+    return 0;
+  }
+
+  if (*m < 0 || *m > *n * (*n - 1) / 2) {
     printf("bad number of edges");
+    return 0;
+  }
+
+  if (*n == 0) {
     return 1;
   }
 
-  *inDegree = calloc(*vertex + 1, sizeof(size_t));
+  *inDegree = (short *)calloc(*n + 1, sizeof(short));
   if (!*inDegree) {
     printf("bad memory");
-    return 1;
+    return 0;
   }
 
-  *adjList = calloc(*vertex + 1, sizeof(node *));
-  if (!*adjList) {
-    printf("bad memory");
+  *adj = createBitMatrix(*n);
+  if (!*adj) {
     free(*inDegree);
-    return 1;
+    *inDegree = NULL;
+    return 0;
   }
 
-  int start, finish;
-
-  for (int i = 0; i < *edge; i++) {
-    if (scanf("%d %d", &start, &finish) != 2) {
+  for (int i = 0; i < *m; ++i) {
+    int u, v;
+    if (scanf("%d %d", &u, &v) != 2) {
       printf("bad number of lines");
-      return 1;
+      free(*inDegree);
+      freeBitMatrix(*adj);
+      return 0;
     }
 
-    if (start < 1 || finish < 1 || start > *vertex || finish > *vertex) {
+    if (u < 1 || u > *n || v < 1 || v > *n) {
       printf("bad vertex");
-      return 1;
+      free(*inDegree);
+      freeBitMatrix(*adj);
+      return 0;
     }
-
-    pushFront(&(*adjList)[start], finish);
-    (*inDegree)[finish]++;
+    setEdge(*adj, u, v);
+    (*inDegree)[v]++;
   }
 
-  return 0;
+  return 1;
 }
 
-void printResult(const size_t *result, const size_t vertex) {
-  for (size_t i = 0; i < vertex; i++) {
-    printf("%zu", result[i]);
-    if (i + 1 < vertex)
+void printResult(const short *result, const int n) {
+  if (!result || n <= 0)
+    return;
+  for (int i = 0; i < n; i++) {
+    printf("%d", result[i]);
+    if (i + 1 < n) {
       printf(" ");
+    }
   }
+  printf("\n");
 }

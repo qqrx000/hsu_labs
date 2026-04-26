@@ -3,8 +3,9 @@ project(lab7 C)
 
 set(SRC src/main.c
         src/io.c
-        src/list.c
-        src/kan.c)
+        src/bitmatrix.c
+        src/kan.c
+        src/queue.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

@@ -1,12 +1,10 @@
 #ifndef IO_H
 #define IO_H
 
-#include <stddef.h>
+struct bitMatrix;
 
-struct node;
+int read(int *n, int *m, short **inDegree, struct bitMatrix **adj);
 
-int read(int *vertex, int *edge, struct node ***adjList, size_t **inDegree);
-
-void printResult(const size_t *result, size_t vertex);
+void printResult(const short *result, int n);
 
 #endif

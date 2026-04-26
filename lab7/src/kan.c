@@ -1,69 +1,44 @@
 #include "kan.h"
-#include "list.h"
-#include <stdlib.h>
+#include "bitMatrix.h"
+#include "queue.h"
 
-struct queue {
-  size_t *data;
-  size_t head;
-  size_t tail;
-};
+#define BITS_PER_WORD 64
 
-static queue *initQueue(const size_t maxSize) {
-  queue *q = malloc(sizeof(struct queue));
+int topoSort(const int n, const bitMatrix *adj, short *inDegree,
+             short *result) {
+  if (!adj || !inDegree || !result || n <= 0)
+    return 0;
+
+  queue *q = createQueue(n);
   if (!q)
-    return NULL;
+    return 0;
 
-  q->data = malloc(sizeof(size_t) * maxSize);
-  if (!q->data) {
-    free(q);
-    return NULL;
-  }
-
-  q->head = 0;
-  q->tail = 0;
-  return q;
-}
-
-static void push(queue *q, const size_t value) { q->data[q->tail++] = value; }
-
-static size_t pop(queue *q) { return q->data[q->head++]; }
-
-static int isEmpty(const queue *q) { return q->head == q->tail; }
-
-int topoSort(const size_t vertex, node **adjList, size_t *inDegree,
-             size_t *result) {
-
-  queue *q = initQueue(vertex);
-  if (!q)
-    return 1;
-
-  for (size_t i = 1; i <= vertex; i++) {
+  for (int i = 1; i <= n; i++) {
     if (inDegree[i] == 0) {
-      push(q, i);
+      push(q, (short)i);
     }
   }
 
-  size_t count = 0;
+  int count = 0;
+  const int wordsPerRow = getWordsPerRow(adj);
+  const unsigned int *data = getData(adj);
 
   while (!isEmpty(q)) {
-    const size_t u = pop(q);
+    const short u = pop(q);
     result[count++] = u;
 
-    const node *cur = adjList[u];
-    while (cur) {
-      const size_t v = getVertex(cur);
-      inDegree[v]--;
+    for (int v = 1; v <= n; v++) {
+      const int wordIdx = u * wordsPerRow + v / BITS_PER_WORD;
+      const int bitIdx = v % BITS_PER_WORD;
 
-      if (inDegree[v] == 0) {
-        push(q, v);
+      if (data[wordIdx] >> bitIdx & 1) {
+        if (--inDegree[v] == 0) {
+          push(q, (short)v);
+        }
       }
-
-      cur = getNext(cur);
     }
   }
 
-  free(q->data);
-  free(q);
-
-  return count != vertex;
+  freeQueue(q);
+  return count == n;
 }

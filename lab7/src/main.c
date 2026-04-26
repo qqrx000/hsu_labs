@@ -1,39 +1,39 @@
+#include "bitmatrix.h"
 #include "io.h"
 #include "kan.h"
-#include "list.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-  int vertex, edge;
-  size_t *inDegree = NULL;
-  node **adjList = NULL;
+  int n, m;
+  short *inDegree = NULL;
+  bitMatrix *adj = NULL;
+  short *result = NULL;
 
-  if (read(&vertex, &edge, &adjList, &inDegree)) {
-    free(inDegree);
-    free(adjList);
-    return  EXIT_SUCCESS;
+  if (!read(&n, &m, &inDegree, &adj)) {
+    goto End;
   }
 
-  size_t *result = malloc(vertex * sizeof(size_t));
+  if (n == 0) {
+    printf("\n");
+    goto End;
+  }
+
+  result = (short *)malloc(n * sizeof(short));
   if (!result) {
     printf("bad memory");
-    free(inDegree);
-    free(adjList);
-    return EXIT_SUCCESS;
+    goto End;
   }
 
-  if (topoSort(vertex, adjList, inDegree, result)) {
-    printf("impossible to sort");
+  if (topoSort(n, adj, inDegree, result)) {
+    printResult(result, n);
   } else {
-    printResult(result, vertex);
+    printf("impossible to sort\n");
   }
-
-  for (int i = 1; i <= vertex; i++) {
-    freeNodes(adjList[i]);
-  }
-  free(adjList);
+End:
   free(inDegree);
+  freeBitMatrix(adj);
   free(result);
 
   return EXIT_SUCCESS;

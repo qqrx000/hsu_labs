@@ -39,7 +39,6 @@ int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
   *adj = createBitMatrix(*n);
   if (!*adj) {
     free(*inDegree);
-    *inDegree = NULL;
     return 0;
   }
 
@@ -47,8 +46,6 @@ int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
     int u, v;
     if (scanf("%d %d", &u, &v) != 2) {
       printf("bad number of lines");
-      free(*inDegree);
-      freeBitMatrix(*adj);
       return 0;
     }
 

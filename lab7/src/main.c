@@ -12,7 +12,7 @@ int main(void) {
   short *result = NULL;
 
   if (!read(&n, &m, &inDegree, &adj)) {
-    goto End;
+    return EXIT_SUCCESS;
   }
 
   if (n == 0) {

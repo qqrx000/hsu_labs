@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BITS_PER_WORD 64
+#define BITS_PER_WORD 32
 
 struct bitMatrix {
   unsigned int *data;
@@ -50,15 +50,6 @@ void setEdge(bitMatrix *bm, const int from, const int to) {
   const int wordIdx = from * bm->wordPerRow + to / BITS_PER_WORD;
   const int bitIdx = to % BITS_PER_WORD;
   bm->data[wordIdx] |= 1ULL << bitIdx;
-}
-
-int hasEdge(const bitMatrix *bm, const int from, const int to) {
-  if (!bm || !bm->data)
-    return 0;
-
-  const int wordIdx = from * bm->wordPerRow + to / BITS_PER_WORD;
-  const int bitIdx = to % BITS_PER_WORD;
-  return (int)bm->data[wordIdx] >> bitIdx & 1;
 }
 
 int getWordsPerRow(const bitMatrix *bm) { return bm ? bm->wordPerRow : 0; }

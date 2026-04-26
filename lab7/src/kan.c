@@ -2,7 +2,7 @@
 #include "bitmatrix.h"
 #include "queue.h"
 
-#define BITS_PER_WORD 64
+#define BITS_PER_WORD 32
 
 int topoSort(const int n, const bitMatrix *adj, short *inDegree,
              short *result) {

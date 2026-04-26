@@ -1,5 +1,5 @@
 #include "kan.h"
-#include "bitMatrix.h"
+#include "bitmatrix.h"
 #include "queue.h"
 
 #define BITS_PER_WORD 64

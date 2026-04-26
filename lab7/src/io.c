@@ -6,6 +6,8 @@
 #define MAX_VERTICES 2000
 
 int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
+  *inDegree = NULL;
+  *adj = NULL;
   if (scanf("%d", n) != 1) {
     printf("bad number of lines");
     return 0;
@@ -25,11 +27,6 @@ int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
     printf("bad number of edges");
     return 0;
   }
-
-  if (*n == 0) {
-    return 1;
-  }
-
   *inDegree = (short *)calloc(*n + 1, sizeof(short));
   if (!*inDegree) {
     printf("bad memory");
@@ -45,6 +42,8 @@ int read(int *n, int *m, short **inDegree, bitMatrix **adj) {
   for (int i = 0; i < *m; ++i) {
     int u, v;
     if (scanf("%d %d", &u, &v) != 2) {
+      free(*inDegree);
+      freeBitMatrix(*adj);
       printf("bad number of lines");
       return 0;
     }

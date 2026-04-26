@@ -15,11 +15,6 @@ int main(void) {
     return EXIT_SUCCESS;
   }
 
-  if (n == 0) {
-    printf("\n");
-    goto End;
-  }
-
   result = (short *)malloc(n * sizeof(short));
   if (!result) {
     printf("bad memory");

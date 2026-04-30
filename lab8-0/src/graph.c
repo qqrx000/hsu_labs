@@ -11,8 +11,6 @@ struct graph {
   int edgCount;
 };
 
-size_t getSizeOfEdges(void) { return sizeof(edges); }
-
 graph *graphInit(const int edge) {
   graph *g = malloc(sizeof(graph));
   if (!g) {

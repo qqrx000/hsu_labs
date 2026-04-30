@@ -41,7 +41,10 @@ void kruskal(graph *g, const int vertexCount) {
     short start, finish;
     unsigned int w;
 
-    getEdge(g, i, &start, &finish, &w);
+    if (getEdge(g, i, &start, &finish, &w) == 1) {
+      printf("error in args");
+      return;
+    }
 
     if (findSet(start) != findSet(finish)) {
       uniteSets(start, finish);

@@ -13,7 +13,6 @@ graph *graphInit(const int vertexCount) {
   if (!g)
     return NULL;
   g->n = vertexCount;
-  g->a = NULL;
   g->a = malloc((vertexCount + 1) * sizeof(unsigned int *));
   if (!g->a) {
     freeGraph(g);

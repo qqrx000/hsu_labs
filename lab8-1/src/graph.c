@@ -13,16 +13,19 @@ graph *graphInit(const int vertexCount) {
   if (!g)
     return NULL;
   g->n = vertexCount;
+  g->a = NULL;
   g->a = malloc((vertexCount + 1) * sizeof(unsigned int *));
   if (!g->a) {
-    free(g);
+    freeGraph(g);
     return NULL;
   }
 
   for (int i = 1; i <= vertexCount; ++i) {
     g->a[i] = calloc(vertexCount + 1, sizeof(unsigned int));
-    if (!g->a[i])
+    if (!g->a[i]) {
+      freeGraph(g);
       return NULL;
+    }
   }
   return g;
 }
@@ -41,9 +44,11 @@ int getVertexCount(const graph *g) { return g->n; }
 void freeGraph(graph *g) {
   if (!g)
     return;
-  for (int i = 1; i <= g->n; ++i) {
-    free(g->a[i]);
+  if (g->a) {
+    for (int i = 1; i <= g->n; ++i) {
+      free(g->a[i]);
+    }
+    free(g->a);
   }
-  free(g->a);
   free(g);
 }

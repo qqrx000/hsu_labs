@@ -1,6 +1,7 @@
 #include "graph.h"
 #include "prim.h"
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 

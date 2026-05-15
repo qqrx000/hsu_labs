@@ -1,83 +1,118 @@
+#include "operators.h"
+#include "parcer.h"
+#include "stack.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum { ADD, SUB, MUL, DIV } operationType;
+int read(short *cntOfOper, char **symbols, char (**types)[LEN_OF_OPER],
+         short **priorities);
 
-typedef struct List {
-    char operator;
-    operationType typeOfOper;
-    int priority;
-    struct List *next;
-} List;
-
-void initList(List **l) {
-    *l = NULL;
-}
-
-void deinitList(List **l) {
-    List *current = *l;
-    while (current) {
-        List *temp = current;
-        current = current->next;
-        free(temp);
-    }
-    *l = NULL;
-}
-
-void destroy(List *l) {
-    while (l != NULL) {
-        List *temp = l;
-        l = l->next;
-        free(temp);
-    }
-}
-
-List *prepend(List *l, const char operator, const operationType typeOfOper, const int priority) {
-    List *ln = malloc(sizeof(*ln));
-    if (!ln) {
-        destroy(l);
-        return NULL;
-    }
-    ln->operator = operator;
-    ln->typeOfOper = typeOfOper;
-    ln->priority = priority;
-    ln->next = l;
-    return ln;
-}
-
-List *append(List *l, const char operator, const operationType typeOfOper, const int priority) {
-    if (!l) return prepend(l, operator, typeOfOper, priority);
-    List *lc = l;
-    List *ln = malloc(sizeof(*ln));
-    while (l->next) {
-        l = l->next;
-    }
-    l->next = ln;
-    l->next->next = NULL;
-    l->operator = operator;
-    l->typeOfOper = typeOfOper;
-    l->priority = priority;
-    return lc;
-}
+int readExpression(char *expr);
 
 int main(void) {
-    size_t countOfOper;
-    if (scanf("%zu", &countOfOper) != 1 || countOfOper > 50) {
-        printf("syntax error");
-        return EXIT_SUCCESS;
-    }
-    List *listOfOpers;
-    initList(&listOfOpers);
-    for (size_t i = 0; i < countOfOper; i++) {
-        char operator;
-        int priority;
-        operationType typeOfOper;
-        if (scanf("%c %operationType %d", &operator, &typeOfOper, &priority) != 3) {
-            printf("syntax error");
-            return EXIT_SUCCESS;
-        }
-        listOfOpers = append(listOfOpers, operator, typeOfOper, priority);
-    }
+  short countOfOperators;
+  char *symbols;
+  char (*types)[LEN_OF_OPER];
+  short *priorities;
 
+  if (read(&countOfOperators, &symbols, &types, &priorities) == 1) {
     return EXIT_SUCCESS;
+  }
+  operatorTable *table = createOperatorTable();
+  if (!table) {
+    goto End;
+  }
+  initOperators(table, symbols, types, priorities, countOfOperators);
+
+  stack *s = createStack();
+  if (!s) {
+    destroyOperatorTable(table);
+    goto End;
+  }
+  char expression[1001];
+  if (readExpression(expression) == 1) {
+    destroyStack(s);
+    destroyOperatorTable(table);
+    goto End;
+  }
+  token *postfix = createPostfix();
+  if (!postfix) {
+    printf("token error");
+    destroyStack(s);
+    destroyOperatorTable(table);
+    goto End;
+  }
+  short size = 0;
+  if (parcer(table, s, expression, postfix, &size) == 1) {
+    printf("syntax error");
+    destroyPostfix(postfix);
+    destroyStack(s);
+    destroyOperatorTable(table);
+    goto End;
+  }
+  if (calculator(postfix, size) == 1) {
+    destroyPostfix(postfix);
+    destroyStack(s);
+    destroyOperatorTable(table);
+    goto End;
+  }
+  destroyPostfix(postfix);
+  destroyStack(s);
+  destroyOperatorTable(table);
+End:
+  free(symbols);
+  free(types);
+  free(priorities);
+  return EXIT_SUCCESS;
+}
+
+int read(short *cntOfOper, char **symbols, char (**types)[LEN_OF_OPER],
+         short **priorities) {
+  if (scanf("%hd", cntOfOper) != 1 || *cntOfOper > 50 || *cntOfOper < 0) {
+    printf("syntax error");
+    return 1;
+  }
+  *symbols = malloc(*cntOfOper * sizeof(char));
+  if (!*symbols) {
+    printf("bad mem");
+    return 1;
+  }
+  *priorities = malloc(*cntOfOper * sizeof(short));
+  if (!*priorities) {
+    printf("bad mem");
+    free(*symbols);
+    return 1;
+  }
+  *types = malloc(sizeof(**types) * *cntOfOper);
+  if (!*types) {
+    printf("bad mem");
+    free(*symbols);
+    free(*priorities);
+    return 1;
+  }
+  for (short i = 0; i < *cntOfOper; ++i) {
+    if (scanf(" %c %4s %hd", &(*symbols)[i], (*types)[i], &(*priorities)[i]) !=
+        3) {
+      printf("syntax error");
+      free(*symbols);
+      free(*types);
+      free(*priorities);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int readExpression(char *expr) {
+  if (scanf(" %1000[^\n]", expr) != 1) {
+    printf("syntax error");
+    return 1;
+  }
+  const int c = getchar();
+  if (c != '\n' && c != EOF) {
+    printf("syntax error");
+    return 1;
+  }
+  return 0;
 }

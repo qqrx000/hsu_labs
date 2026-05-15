@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(lab4 C)
 
-set(SRC src/main.c)
+set(SRC src/main.c
+        src/stack.c
+        src/operators.c
+        src/parcer.c
+)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

@@ -14,7 +14,7 @@ struct stack {
 };
 
 stack *createStack(void) {
-  stack *s = malloc(sizeof(stack));
+  stack *s = (stack *)malloc(sizeof(stack));
   if (!s) {
     printf("stack error");
     return NULL;

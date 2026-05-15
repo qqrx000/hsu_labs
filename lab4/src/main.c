@@ -73,18 +73,18 @@ int read(short *cntOfOper, char **symbols, char (**types)[LEN_OF_OPER],
     printf("syntax error");
     return 1;
   }
-  *symbols = malloc(*cntOfOper * sizeof(char));
+  *symbols = (char *)malloc(*cntOfOper * sizeof(char));
   if (!*symbols) {
     printf("bad mem");
     return 1;
   }
-  *priorities = malloc(*cntOfOper * sizeof(short));
+  *priorities = (short *)malloc(*cntOfOper * sizeof(short));
   if (!*priorities) {
     printf("bad mem");
     free(*symbols);
     return 1;
   }
-  *types = malloc(sizeof(**types) * *cntOfOper);
+  *types = (char (*)[LEN_OF_OPER])malloc(sizeof(**types) * *cntOfOper);
   if (!*types) {
     printf("bad mem");
     free(*symbols);

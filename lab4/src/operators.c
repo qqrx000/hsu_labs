@@ -32,7 +32,7 @@ static operationType mapType(const char *t) {
 }
 
 operatorTable *createOperatorTable(void) {
-  operatorTable *table = malloc(sizeof(operatorTable));
+  operatorTable *table = (operatorTable *)malloc(sizeof(operatorTable));
   if (!table) {
     printf("table error");
     return NULL;

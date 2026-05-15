@@ -21,7 +21,7 @@ struct token {
 };
 
 token *createPostfix(void) {
-  token *postfix = malloc(sizeof(token) * LEN_OF_EXPRESSION);
+  token *postfix = (token *)malloc(sizeof(token) * LEN_OF_EXPRESSION);
   if (!postfix) {
     return NULL;
   }

@@ -10,7 +10,7 @@ int main(void) {
         return EXIT_SUCCESS;
     }
 
-    tree *root = newTree(vertex);
+    rbtree *root = newTree(vertex);
     if (!root) {
         printf("Bad input\n");
         return EXIT_SUCCESS;

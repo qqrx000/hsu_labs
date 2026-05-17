@@ -1,11 +1,11 @@
 #ifndef TREE_H
 #define TREE_H
 
-typedef struct tree tree;
+typedef struct rbtree rbtree;
 
-tree *newTree(int maxNodes);
-void freeTree(tree *root);
-tree *insert(tree *root, int value);
-int getBlackHeight(const tree *root);
+rbtree *newTree(int maxNodes);
+void freeTree(rbtree *t);
+void insert(rbtree *t, int value);
+int getBlackHeight(const rbtree *t);
 
 #endif

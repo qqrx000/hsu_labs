@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(lab6-1 C)
 
-set(SRC src/main.c)
+set(SRC src/main.c
+        src/tree.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
